@@ -5,7 +5,7 @@
 <body>
 	<h4>Gracias por jugar con nosotros</h4>
 	<?php
-		$ i = `python test.py`;
+		$ i = `python Final3.py`;
     	echo $ i;
 	?>
 </body>
