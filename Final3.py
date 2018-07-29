@@ -2,8 +2,11 @@
 # coding: utf-8
 
 # In[1]:
-
-
+#Imports para servidor
+import json
+import requests
+import sys
+import os
 # Imports necesarios
 import numpy as np
 import pandas as pd
@@ -258,14 +261,23 @@ acc_decision_tree = round(decision_tree.score(x_train, y_train) * 100, 2)
 
 #predecir artista CAMILA CABELLO featuring YOUNG THUG
 # con su canción Havana llego a numero 1 Billboard US en 2017
+#response.json()
 
-top = 1;
-moodEncoded = 5;
-tempoEncoded = 2;
-genreEncoded = 4;
-artist_typeEncoded = 1;
-edad = 0;
-durationEncoded = 3;
+#RECIBIR JSON CON ARRAY
+try:
+    data = json.loads(sys.argv[1])
+except:
+    print "ERROR"
+    sys.exit(1)
+
+
+top = data[0]
+moodEncoded = data[1]
+tempoEncoded = data[2]
+genreEncoded = data[3]
+artist_typeEncoded = data[4]
+edad = data[5]
+durationEncoded = data[6]
 
 x_test = pd.DataFrame(columns=('top','moodEncoded', 'tempoEncoded', 'genreEncoded','artist_typeEncoded','edadEncoded','durationEncoded'))
 x_test.loc[0] = (top,moodEncoded,tempoEncoded,genreEncoded,artist_typeEncoded,edad,durationEncoded)
@@ -273,3 +285,6 @@ y_pred = decision_tree.predict(x_test.drop(['top'], axis = 1))
 print("Prediccion: " + str(y_pred))
 y_proba = decision_tree.predict_proba(x_test.drop(['top'], axis = 1))
 print("Probabilidad de Acierto: " + str(round(y_proba[0][y_pred][0]* 100, 2))+"%")
+
+#ENVIAR RESULTADO
+print json.dumps(result)
